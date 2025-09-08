@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CryptoTick{
+    id        String   @id @default(cuid())
+    symbol    String // e.g. BTCUSDT
+    price     Decimal  @db.Decimal(18, 8)
+    fetchedAt DateTime // gerçek veri zamanı
+    source    String //
+
+    @@unique([symbol, fetchedAt]) // idempotency için dakika-dakika eklerken
+    @@index([symbol, fetchedAt])
+
+}
