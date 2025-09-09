@@ -1,0 +1,149 @@
+v0 Prompt — Kripto Canlı Dashboard (Next.js 15, UI-only)
+
+Rol & Teknoloji
+
+Sadece Next.js 15 + App Router (app/) kullan. Vite kullanma.
+
+TypeScript, Tailwind CSS, shadcn/ui, lucide-react, framer-motion, recharts (grafikler).
+
+Karanlık/açık tema: class strategy (dark class).
+
+Kodlar UI-only: gerçek API yok, websocket yok — yerlerine mock veri ve sahte “live tick” simülasyonu (setInterval) kullan.
+
+Teslim Formatı (tam dosya listesi)
+
+Tüm dosyaları tek yanıtta ver, her biri önce şu başlıkla gelsin:
+/// FILE: <yol>
+
+Zorunlu dosyalar:
+
+app/layout.tsx (tema, font, <ThemeProvider>, <Toaster>)
+
+app/page.tsx → / yönlendirsin /dashboard’a veya kısa bir landing
+
+app/dashboard/page.tsx → ana sayfa
+
+components/navbar.tsx, components/sidebar.tsx
+
+components/metrics-cards.tsx (Toplam Piyasa Değeri, 24h Hacim, BTC Dominance, Portföy Değeri)
+
+components/price-ticker.tsx (yatay kayan coin şeridi)
+
+components/watchlist-table.tsx (tablo + satır içi artış/azalış badge)
+
+components/market-chart.tsx (Recharts AreaChart, 1h/24h/7d tuşları)
+
+components/orderbook.tsx (UI-only, iki kolon: Bids / Asks, derinlik barları)
+
+components/trades-feed.tsx (son işlemler listesi, infinite-scroll UI simülasyonu)
+
+components/filters.tsx (arama, market filtreleri: Spot/Perp, borsa seçici – UI-only)
+
+components/latency-indicator.tsx (sahte gecikme ms)
+
+components/skeletons.tsx (yüklenme iskeletleri)
+
+lib/mocks.ts (coin listesi, OHLC/line verisi, orderbook örneği)
+
+lib/format.ts (sayı/para/yüzde format yardımcıları)
+
+types/index.ts (Coin, Ticker, OHLCPoint, OrderbookLevel, Trade)
+
+app/globals.css (Tailwind base + küçük utility sınıfları)
+
+shadcn/ui import yollarını @/components/ui/... şeklinde kullan.
+
+Sayfa düzeni / UX
+
+Üstte Navbar (logo, arama, tema switch, profil menüsü).
+
+Solda Sidebar (Dashboard, Watchlist, Markets, Portfolio [UI-only], Settings [UI-only]).
+
+Dashboard grid (responsive):
+
+Satır 1: MetricsCards (4 kart)
+
+Satır 2: solda MarketChart (AreaChart + interval butonları), sağda Orderbook (UI-only)
+
+Satır 3: solda WatchlistTable, sağda TradesFeed
+
+En üstte PriceTicker full-width, sticky değil ama header altında.
+
+Filters barı: arama inputu, “Exchange” (Select), “Market” (Spot/Perp), “Sort” (Select). Şimdilik console.log ile çalışsın.
+
+Tüm sekmeler/tablolar loading, empty, error durumlarına sahip olsun (UI-only). components/skeletons.tsx kullan.
+
+Canlı veri simülasyonu
+
+useEffect içinde setInterval ile 2 sn’de bir:
+
+Watchlist satırlarında son fiyat ± küçük rastgele değişim
+
+Orderbook seviyelerinde küçük oynama
+
+TradesFeed’e sahte işlem push (maks 100 satır; en eskileri düş)
+
+Bu “tick” mantığını tek yerde yöneten basit bir useLiveMockTickers() hook’u yaz ve ilgili bileşenlere prop olarak ver.
+
+Grafik
+
+recharts AreaChart kullan; alt eksen zamanı, sağ eksen fiyat. Renk belirtme zorunlu değil; temaya uygun default kalsın.
+
+1h / 24h / 7d butonları UI-only olarak grafiğe farklı mock seri uygulasın.
+
+Erişilebilirlik & Tasarım
+
+Tailwind ile yumuşak kartlar (rounded-2xl, shadow-sm, yeterli padding).
+
+Klavye odak halkaları, aria-label ve Label/Input eşleşmesi.
+
+%60-70 beyaz boşluk, okunabilir tipografi (Inter).
+
+Kırmızı/yeşil badge veya pill ile 24h değişim göstergesi.
+
+Dark mode düzgün çalışsın.
+
+Örnek Veri Şeması (types)
+
+export type Coin = {
+  id: string; // "btc"
+  symbol: string; // "BTC"
+  name: string;  // "Bitcoin"
+  price: number;
+  change24hPct: number; // -0.82
+  marketCap: number;
+  volume24h: number;
+  dominance?: number; // BTC için
+};
+
+export type OHLCPoint = { t: number; o: number; h: number; l: number; c: number };
+export type Ticker = { id: string; price: number; time: number };
+export type OrderbookLevel = { price: number; size: number; total?: number };
+export type Trade = { id: string; side: "buy" | "sell"; price: number; size: number; time: number };
+
+
+Tablo Kolonları (Watchlist)
+
+Coin (ikon + sembol + isim)
+
+Fiyat
+
+24h %
+
+24h Hacim
+
+Piyasa Değeri
+
+Aksiyonlar: ⭐ (watch), 🔔 (alert – UI-only), “Detay” butonu (şimdilik toast)
+
+Kabul Kriterleri
+
+Proje Next.js 15 App Router ile derlenebilir; Vite hiçbir yerde geçmez.
+
+Tüm importlar tam; bileşenler ayrıştırılmış; tipler doğru.
+
+Mock tick akışı çalışır; UI elementleri interaktif ama API’siz.
+
+Loading/Empty/Error UI’leri mevcut.
+
+Karanlık/açık tema sorunsuz.
