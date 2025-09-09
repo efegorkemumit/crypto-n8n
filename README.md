@@ -3,6 +3,16 @@
 [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/efegorkemumit) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/efe-g%C3%B6rkem-%C3%BCmit-a084009b/) [![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?logo=YouTube&logoColor=white)](https://youtube.com/@@EfeGorkemUmit) 
 
 
+## Video
+- 00:00 Tanıtım
+- 01:23 Alternatif Yapay Zeka ile Dashboard Tasarımı 
+- 03:34 Next.js 15 Kurulumu ve Prisma DB Ayarları 
+- 13:53 prisma.ts Dosyası Oluşturma ve Kullanımı
+- 17:17 n8n Şema Tasarımı 
+- 29:48 verifySecret Middleware ve Bulk Route API
+- 49:07 Dashboard Sayfası ve GET İsteği
+- 01:19:36 n8n Schedule Trigger ile Otomasyon
+
 
 # 📊 Kripto Canlı Dashboard (Next.js 15 + Prisma + n8n)
 
